@@ -1,4 +1,5 @@
-maps = ["8969799987646798965432975435334567987976999867976794468999979759865767896545699865678952123899325456",
+maps = [
+"8969799987646798965432975435334567987976999867976794468999979759865767896545699865678952123899325456",
 "7658678998434597654321984320123458976765789998965432367998968998754556789434987654489543535698912349",
 "6243457899325679997620195431934569765654667999993101246796856997643245679759865443356954656987894498",
 "4102345678912998789531297659895978954213456899874512659965239876432134578998754321267899877976789987",
@@ -99,11 +100,13 @@ maps = ["89697999876467989654329754353345679879769998679767944689999797598657678
 "6531012456789996431239954321239986545646799986587893776789678993210127898767787899879745678998955897",
 "6542123568899987544398765510123497656656789987678954567898799654431338999978898910989656789209876789"]
 
+"""
 maps = ["2199943210",
 "3987894921",
 "9856789892",
 "8767896789",
 "9899965678"]
+"""
 
 tot = 0
 lows = []
@@ -119,7 +122,7 @@ right = ()
 xC = 0
 yC = 0
 sides = []
-padRow = "9"*104
+padRow = "9"*100
 currCoord = ()
 compCoord = ()
 basins = []
@@ -133,9 +136,10 @@ maps.insert(0, padRow)
 maps.append(padRow)
 for y in range(len(maps)):
     maps[y] = "99" + maps[y] + "99"
+    print(maps[y])
     
-for y in range(2, len(maps)-2):
-    for x in range(1, len(maps[y])-1):
+for y in range(2, len(maps)-1):
+    for x in range(2, len(maps[y])-1):
         if maps[y][x] < maps[y+1][x]:
             if maps[y][x] < maps[y-1][x]:
                 if maps[y][x] < maps[y][x+1]:
@@ -145,8 +149,8 @@ for y in range(2, len(maps)-2):
 print("Lows", lows)
 newCoords = []
 coordFound = True
-for coord in coords:
-    print(maps[coord[0]][coord[1]])
+#for coord in coords:
+    #print(maps[coord[0]][coord[1]])
 
 for coord in coords:
     basin = []
@@ -157,70 +161,77 @@ for coord in coords:
     while coordFound:
         coordFound = False
         for x in range(len(basin)):
-            #print("Basin",basin[x])
-            #print("yC",basin[x][0])
-            #print("xC",basin[x][1])
-            #print("Basin",basin)
 
             if 0 < basin[x][0] < len(maps)-1:
                 yC = basin[x][0]+1
             if 0 < basin[x][1] < len(maps[0])-1:
                 xC = basin[x][1]
-            #print(yC,xC)
-            if maps[yC][xC] < maps[yC+1][xC] or (yC+1,xC) in basin:
-                if maps[yC][xC] < maps[yC-1][xC] or (yC-1,xC) in basin:
-                    if maps[yC][xC] < maps[yC][xC+1] or (yC,xC+1) in basin:
-                        if maps[yC][xC] < maps[yC][xC-1] or (yC,xC-1) in basin:
-                            if (yC,xC) not in basin:
-                                basin.append((yC,xC))
-                                coordFound = True
+            if maps[yC][xC] != 9:
+                if (maps[yC][xC] < maps[yC+1][xC]) or ((yC+1,xC) in basin):
+                    if (maps[yC][xC] < maps[yC-1][xC]) or ((yC-1,xC) in basin):
+                        if (maps[yC][xC] < maps[yC][xC+1]) or ((yC,xC+1) in basin):
+                            if (maps[yC][xC] < maps[yC][xC-1]) or ((yC,xC-1) in basin):
+                                if (yC,xC) not in basin:
+                                    basin.append((yC,xC))
+                                    coordFound = True
 
             if 0 < basin[x][0] < len(maps)-1:
                 yC = basin[x][0]
             if 0 < basin[x][1] < len(maps[0])-1:
                 xC = basin[x][1]+1
-            #print(yC,xC)
-            if maps[yC][xC] < maps[yC+1][xC] or (yC+1,xC) in basin:
-                if maps[yC][xC] < maps[yC-1][xC] or (yC-1,xC) in basin:
-                    if maps[yC][xC] < maps[yC][xC+1] or (yC,xC+1) in basin:
-                        if maps[yC][xC] < maps[yC][xC-1] or (yC,xC-1) in basin:
-                            if (yC,xC) not in basin:
-                                basin.append((yC,xC))
-                                coordFound = True
-
+            if maps[yC][xC] != 9:
+                if (maps[yC][xC] < maps[yC+1][xC]) or ((yC+1,xC) in basin):
+                    if (maps[yC][xC] < maps[yC-1][xC]) or ((yC-1,xC) in basin):
+                        if (maps[yC][xC] < maps[yC][xC+1]) or ((yC,xC+1) in basin):
+                            if (maps[yC][xC] < maps[yC][xC-1]) or ((yC,xC-1) in basin):
+                                if (yC,xC) not in basin:
+                                    basin.append((yC,xC))
+                                    coordFound = True
+            
             if 0 < basin[x][0] < len(maps)-1:
                 yC = basin[x][0]-1
             if 0 < basin[x][1] < len(maps[0])-1:
                 xC = basin[x][1]
-            if maps[yC][xC] < maps[yC+1][xC] or (yC+1,xC) in basin:
-                if maps[yC][xC] < maps[yC-1][xC] or (yC-1,xC) in basin:
-                    if maps[yC][xC] < maps[yC][xC+1] or (yC,xC+1) in basin:
-                        if maps[yC][xC] < maps[yC][xC-1] or (yC,xC-1) in basin:
-                            if (yC,xC) not in basin:
-                                basin.append((yC,xC))
-                                coordFound = True
-
+            if maps[yC][xC] != 9:
+                if (maps[yC][xC] < maps[yC+1][xC]) or ((yC+1,xC) in basin):
+                    if (maps[yC][xC] < maps[yC-1][xC]) or ((yC-1,xC) in basin):
+                        if (maps[yC][xC] < maps[yC][xC+1]) or ((yC,xC+1) in basin):
+                            if (maps[yC][xC] < maps[yC][xC-1]) or ((yC,xC-1) in basin):
+                                if (yC,xC) not in basin:
+                                    basin.append((yC,xC))
+                                    coordFound = True
+            
             if 0 < basin[x][0] < len(maps)-1:
                 yC = basin[x][0]
             if 0 < basin[x][1] < len(maps[0])-1:
                 xC = basin[x][1]-1
-            if maps[yC][xC] < maps[yC+1][xC] or (yC+1,xC) in basin:
-                if maps[yC][xC] < maps[yC-1][xC] or (yC-1,xC) in basin:
-                    if maps[yC][xC] < maps[yC][xC+1] or (yC,xC+1) in basin:
-                        if maps[yC][xC] < maps[yC][xC-1] or (yC,xC-1) in basin:
-                            if (yC,xC) not in basin:
-                                basin.append((yC,xC))
-                                coordFound = True
+            if maps[yC][xC] != 9:
+                if (maps[yC][xC] < maps[yC+1][xC]) or ((yC+1,xC) in basin):
+                    if (maps[yC][xC] < maps[yC-1][xC]) or ((yC-1,xC) in basin):
+                        if (maps[yC][xC] < maps[yC][xC+1]) or ((yC,xC+1) in basin):
+                            if (maps[yC][xC] < maps[yC][xC-1]) or ((yC,xC-1) in basin):
+                                if (yC,xC) not in basin:
+                                    basin.append((yC,xC))
+                                    coordFound = True
     basins.append(basin)
-    #print(basins)
-    lengths = []
+
+for x in range(len(maps)):
+    print(maps[x])
+
+lengths = []
 for x in range(len(basins)):
     lengths.append(len(basins[x]))
-lengths.sort()
+lengths.sort()  
+    
 
+for y in range(len(basins)):
+    for x in range(len(basins[y])):
+        print(maps[basins[y][x][0]][basins[y][x][0]])
+print(basins)
 print(sum(lows)+len(lows))
 print("Done",lengths)
 print(lengths[len(lengths)-1]*lengths[len(lengths)-2]*lengths[len(lengths)-3])
 # 93576210 too high
 # 631470 too low
 print(70*93*97)
+print(maps[3][2])
